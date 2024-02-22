@@ -1,4 +1,4 @@
-package com.example.demo.infrastructure.controller;
+package com.example.demo.infrastructure.rest.controller;
 
 import com.example.demo.domain.models.Student;
 import com.example.demo.domain.ports.out.StudentRepositoryPort;
