@@ -5,6 +5,7 @@ import com.example.demo.domain.ports.out.CourseRepositoryPort;
 import com.example.demo.infrastructure.mapper.CourseEntityMap;
 import com.example.demo.infrastructure.entities.CourseEntity;
 import com.example.demo.infrastructure.repository.JpaCourseRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -15,14 +16,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
+@RequiredArgsConstructor
 public class JpaCourseRepositoryAdapter implements CourseRepositoryPort {
 
     private final JpaCourseRepository jpaCourseRepository;
     private final Logger logger = LoggerFactory.getLogger(JpaCourseRepositoryAdapter.class);
-
-    public JpaCourseRepositoryAdapter(JpaCourseRepository jpaCourseRepository) {
-        this.jpaCourseRepository = jpaCourseRepository;
-    }
 
     @Override
     public Course save(Course course) {
