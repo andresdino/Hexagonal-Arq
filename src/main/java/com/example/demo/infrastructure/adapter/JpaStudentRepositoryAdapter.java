@@ -5,12 +5,14 @@ import com.example.demo.domain.ports.out.StudentRepositoryPort;
 import com.example.demo.infrastructure.Mapper.StudentEntityMap;
 import com.example.demo.infrastructure.entities.StudentEntity;
 import com.example.demo.infrastructure.repository.JpaStudentRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Repository
 public class JpaStudentRepositoryAdapter implements StudentRepositoryPort {
 
     private final JpaStudentRepository jpaStudentRepository;

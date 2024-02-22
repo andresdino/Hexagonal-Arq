@@ -5,12 +5,15 @@ import com.example.demo.domain.ports.out.CourseRepositoryPort;
 import com.example.demo.infrastructure.Mapper.CourseEntityMap;
 import com.example.demo.infrastructure.entities.CourseEntity;
 import com.example.demo.infrastructure.repository.JpaCourseRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+@Repository
 public class JpaCourseRepositoryAdapter implements CourseRepositoryPort {
 
     private final JpaCourseRepository jpaCourseRepository;
