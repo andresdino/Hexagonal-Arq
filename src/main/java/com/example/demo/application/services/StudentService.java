@@ -1,7 +1,9 @@
 package com.example.demo.application.services;
 
 
+import com.example.demo.application.usecases.StudentUseCaseImpl;
 import com.example.demo.domain.models.Student;
+import com.example.demo.domain.ports.in.StudentUseCase;
 import com.example.demo.domain.ports.in.Students.CreateStudentUseCase;
 import com.example.demo.domain.ports.in.Students.DeleteStudentUseCase;
 import com.example.demo.domain.ports.in.Students.RetrieveStudentsUseCase;
@@ -14,36 +16,32 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class StudentService implements CreateStudentUseCase, DeleteStudentUseCase, RetrieveStudentsUseCase, UpdateStudentUseCase {
+public class StudentService implements StudentUseCase {
 
-    private final CreateStudentUseCase createStudentUseCase;
-    private final DeleteStudentUseCase deleteStudentUseCase;
-    private final RetrieveStudentsUseCase retrieveStudentsUseCase;
-    private final UpdateStudentUseCase updateStudentUseCase;
-
+    private final StudentUseCaseImpl studentUseCaseImpl;
 
     @Override
     public Student createStudent(Student student) {
-        return createStudentUseCase.createStudent(student);
+        return studentUseCaseImpl.createStudent(student);
     }
 
     @Override
     public void deleteStudent(Long studentId) {
-        deleteStudentUseCase.deleteStudent(studentId);
+        studentUseCaseImpl.deleteStudent(studentId);
     }
 
     @Override
     public Optional<Student> getStudent(Long studentId) {
-        return retrieveStudentsUseCase.getStudent(studentId);
+        return studentUseCaseImpl.getStudent(studentId);
     }
 
     @Override
     public List<Student> getAllStudents() {
-        return retrieveStudentsUseCase.getAllStudents();
+        return studentUseCaseImpl.getAllStudents();
     }
 
     @Override
     public Optional<Student> updateStudent(Long studentId, Student student) {
-        return updateStudentUseCase.updateStudent(studentId, student);
+        return studentUseCaseImpl.updateStudent(studentId, student);
     }
 }
