@@ -14,8 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseRequestDto implements Serializable {
-    Long id;
     String name;
     String teacher;
-    List<StudentRequestDto> students;
 }

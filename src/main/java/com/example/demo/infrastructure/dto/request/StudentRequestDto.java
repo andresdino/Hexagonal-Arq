@@ -12,7 +12,5 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentRequestDto implements Serializable {
-    Long id;
     String name;
-    Long courseId;
 }
