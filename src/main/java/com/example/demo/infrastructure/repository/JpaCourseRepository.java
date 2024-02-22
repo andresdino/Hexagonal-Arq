@@ -1,12 +1,10 @@
 package com.example.demo.infrastructure.repository;
 
-import com.example.demo.domain.models.Course;
+import com.example.demo.infrastructure.entities.CourseEntity;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
-public interface JpaCourseRepository extends CrudRepository<Course, Long> {
-
-    Optional<Course> update(Course course);
+@Repository
+public interface JpaCourseRepository extends CrudRepository<CourseEntity, Long> {
 
 }
