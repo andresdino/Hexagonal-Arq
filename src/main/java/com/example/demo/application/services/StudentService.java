@@ -4,10 +4,6 @@ package com.example.demo.application.services;
 import com.example.demo.application.usecases.StudentUseCaseImpl;
 import com.example.demo.domain.models.Student;
 import com.example.demo.domain.ports.in.StudentUseCase;
-import com.example.demo.domain.ports.in.Students.CreateStudentUseCase;
-import com.example.demo.domain.ports.in.Students.DeleteStudentUseCase;
-import com.example.demo.domain.ports.in.Students.RetrieveStudentsUseCase;
-import com.example.demo.domain.ports.in.Students.UpdateStudentUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
