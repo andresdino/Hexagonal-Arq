@@ -6,24 +6,20 @@ import com.example.demo.domain.ports.in.Students.CreateStudentUseCase;
 import com.example.demo.domain.ports.in.Students.DeleteStudentUseCase;
 import com.example.demo.domain.ports.in.Students.RetrieveStudentsUseCase;
 import com.example.demo.domain.ports.in.Students.UpdateStudentUseCase;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@RequiredArgsConstructor
 public class StudentService implements CreateStudentUseCase, DeleteStudentUseCase, RetrieveStudentsUseCase, UpdateStudentUseCase {
 
     private final CreateStudentUseCase createStudentUseCase;
     private final DeleteStudentUseCase deleteStudentUseCase;
     private final RetrieveStudentsUseCase retrieveStudentsUseCase;
     private final UpdateStudentUseCase updateStudentUseCase;
-
-
-    public StudentService(CreateStudentUseCase createStudentUseCase, DeleteStudentUseCase deleteStudentUseCase, RetrieveStudentsUseCase retrieveStudentsUseCase, UpdateStudentUseCase updateStudentUseCase) {
-        this.createStudentUseCase = createStudentUseCase;
-        this.deleteStudentUseCase = deleteStudentUseCase;
-        this.retrieveStudentsUseCase = retrieveStudentsUseCase;
-        this.updateStudentUseCase = updateStudentUseCase;
-    }
 
 
     @Override
