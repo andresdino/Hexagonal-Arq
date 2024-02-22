@@ -1,4 +1,4 @@
-package com.example.demo.application.dto.response;
+package com.example.demo.infrastructure.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,12 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentResponseDto implements Serializable {
+public class CourseResponseDto implements Serializable {
     Long id;
     String name;
-    Long courseId;
+    String teacher;
+    List<StudentResponseDto> students;
 }
