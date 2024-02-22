@@ -2,10 +2,14 @@ package com.example.demo.infrastructure.adapter;
 
 import com.example.demo.domain.models.Course;
 import com.example.demo.domain.ports.out.CourseRepositoryPort;
+import com.example.demo.infrastructure.Mapper.CourseEntityMap;
+import com.example.demo.infrastructure.entities.CourseEntity;
 import com.example.demo.infrastructure.repository.JpaCourseRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class JpaCourseRepositoryAdapter implements CourseRepositoryPort {
 
@@ -17,26 +21,38 @@ public class JpaCourseRepositoryAdapter implements CourseRepositoryPort {
 
     @Override
     public Course save(Course course) {
-        return null;
+        CourseEntity courseEntity = CourseEntityMap.fromDomainModel(course);
+        CourseEntity saveCourseEntity = jpaCourseRepository.save(courseEntity);
+        return CourseEntityMap.toDomainModel(saveCourseEntity);
     }
 
     @Override
     public Optional<Course> findById(Long courseId) {
-        return Optional.empty();
+        return jpaCourseRepository.findById(courseId).map(CourseEntityMap::toDomainModel);
     }
 
     @Override
     public List<Course> findAll() {
-        return null;
+        Iterable<CourseEntity> courseEntities = jpaCourseRepository.findAll();
+        List<CourseEntity> courseEntityList = new ArrayList<>();
+        courseEntities.forEach(courseEntityList::add);
+        return courseEntityList.stream().map(CourseEntityMap::toDomainModel).collect(Collectors.toList());
     }
 
     @Override
     public Optional<Course> update(Course course) {
+        if (jpaCourseRepository.existsById(course.getId())){
+            CourseEntity courseEntity = CourseEntityMap.fromDomainModel(course);
+            CourseEntity updateCourseEntity = jpaCourseRepository.save(courseEntity);
+            return Optional.of(CourseEntityMap.toDomainModel(courseEntity));
+        }
         return Optional.empty();
     }
 
     @Override
     public void deleteById(Long courseId) {
-
+        if (jpaCourseRepository.existsById(courseId)){
+            jpaCourseRepository.deleteById(courseId);
+        }
     }
 }
