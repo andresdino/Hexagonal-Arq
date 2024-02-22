@@ -3,17 +3,20 @@ package com.example.demo.application.services;
 
 import com.example.demo.domain.models.Student;
 import com.example.demo.domain.ports.in.Students.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class StudentService implements CreateStudentUseCase, DeleteStudentUseCase, GetStudentsByCourseIdUseCase, RetrieveStudentsUseCase, UpdateStudentUseCase {
 
     private final CreateStudentUseCase createStudentUseCase;
     private final DeleteStudentUseCase deleteStudentUseCase;
-    private final GetStudentsByCourseIdUseCase getStudentsByCourseIdUseCase;
     private final RetrieveStudentsUseCase retrieveStudentsUseCase;
     private final UpdateStudentUseCase updateStudentUseCase;
+    private final GetStudentsByCourseIdUseCase getStudentsByCourseIdUseCase;
+
 
     public StudentService(CreateStudentUseCase createStudentUseCase, DeleteStudentUseCase deleteStudentUseCase, GetStudentsByCourseIdUseCase getStudentsByCourseIdUseCase, RetrieveStudentsUseCase retrieveStudentsUseCase, UpdateStudentUseCase updateStudentUseCase) {
         this.createStudentUseCase = createStudentUseCase;

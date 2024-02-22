@@ -5,10 +5,12 @@ import com.example.demo.domain.ports.in.Courses.CreateCourseUseCase;
 import com.example.demo.domain.ports.in.Courses.DeleteCourseUseCase;
 import com.example.demo.domain.ports.in.Courses.RetrieveCoursesUseCase;
 import com.example.demo.domain.ports.in.Courses.UpdateCourseUseCase;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CourseService implements CreateCourseUseCase, DeleteCourseUseCase, RetrieveCoursesUseCase, UpdateCourseUseCase {
 
     private final CreateCourseUseCase createCourseUseCase;
