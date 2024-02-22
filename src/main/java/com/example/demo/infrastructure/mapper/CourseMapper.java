@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
-@Getter
-@Setter
-public class CourseEntityMap {
+public class CourseMapper {
 
     private static final ModelMapper modelMapper = new ModelMapper();
 
