@@ -2,7 +2,7 @@ package com.example.demo.infrastructure.adapter;
 
 import com.example.demo.domain.models.Course;
 import com.example.demo.domain.ports.out.CourseRepositoryPort;
-import com.example.demo.infrastructure.mapper.CourseEntityMap;
+import com.example.demo.infrastructure.mapper.CourseMapper;
 import com.example.demo.infrastructure.entities.CourseEntity;
 import com.example.demo.infrastructure.repository.JpaCourseRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +25,10 @@ public class JpaCourseRepositoryAdapter implements CourseRepositoryPort {
     @Override
     public Course save(Course course) {
         logger.info("Saving course with id: {}", course.getId());
-        CourseEntity courseEntity = CourseEntityMap.fromDomainModel(course);
+        CourseEntity courseEntity = CourseMapper.fromDomainModel(course);
         CourseEntity saveCourseEntity = jpaCourseRepository.save(courseEntity);
         logger.info("Course saved successfully with id: {}", saveCourseEntity.getId());
-        return CourseEntityMap.toDomainModel(saveCourseEntity);
+        return CourseMapper.toDomainModel(saveCourseEntity);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class JpaCourseRepositoryAdapter implements CourseRepositoryPort {
         logger.info("Finding course with id: {}", courseId);
         return jpaCourseRepository.findById(courseId).map(courseEntity -> {
             logger.info("Course found with id: {}", courseId);
-            return CourseEntityMap.toDomainModel(courseEntity);
+            return CourseMapper.toDomainModel(courseEntity);
         });
     }
 
@@ -46,7 +46,7 @@ public class JpaCourseRepositoryAdapter implements CourseRepositoryPort {
         Iterable<CourseEntity> courseEntities = jpaCourseRepository.findAll();
         List<CourseEntity> courseEntityList = new ArrayList<>();
         courseEntities.forEach(courseEntityList::add);
-        List<Course> courses = courseEntityList.stream().map(CourseEntityMap::toDomainModel).collect(Collectors.toList());
+        List<Course> courses = courseEntityList.stream().map(CourseMapper::toDomainModel).collect(Collectors.toList());
         logger.info("Found {} courses", courses.size());
         return courses;
     }
@@ -55,10 +55,10 @@ public class JpaCourseRepositoryAdapter implements CourseRepositoryPort {
     public Optional<Course> update(Course course) {
         logger.info("Updating course with id: {}", course.getId());
         if (jpaCourseRepository.existsById(course.getId())) {
-            CourseEntity courseEntity = CourseEntityMap.fromDomainModel(course);
+            CourseEntity courseEntity = CourseMapper.fromDomainModel(course);
             CourseEntity updateCourseEntity = jpaCourseRepository.save(courseEntity);
             logger.info("Course updated successfully with id: {}", updateCourseEntity.getId());
-            return Optional.of(CourseEntityMap.toDomainModel(updateCourseEntity));
+            return Optional.of(CourseMapper.toDomainModel(updateCourseEntity));
         }
         logger.warn("Course with id {} not found for update", course.getId());
         return Optional.empty();
