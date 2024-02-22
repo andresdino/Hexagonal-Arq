@@ -6,7 +6,7 @@ import com.example.demo.domain.models.Student;
 
 public class StudentMapper {
 
-    public static Student mapToStudent(StudentRequestDto studentRequestDto) {
+    public static Student studentDtoToStudent(StudentRequestDto studentRequestDto) {
         Student student = new Student();
         student.setId(studentRequestDto.getId());
         student.setName(studentRequestDto.getName());
@@ -15,7 +15,7 @@ public class StudentMapper {
         return student;
     }
 
-    public static StudentResponseDto mapToStudentResponseDto(Student student) {
+    public static StudentResponseDto StudentmapToStudentDto(Student student) {
         StudentResponseDto studentResponseDto = new StudentResponseDto();
         studentResponseDto.setId(student.getId());
         studentResponseDto.setName(student.getName());
