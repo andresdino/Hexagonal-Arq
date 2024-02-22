@@ -2,7 +2,7 @@ package com.example.demo.infrastructure.adapter;
 
 import com.example.demo.domain.models.Student;
 import com.example.demo.domain.ports.out.StudentRepositoryPort;
-import com.example.demo.infrastructure.Mapper.StudentEntityMap;
+import com.example.demo.infrastructure.mapper.StudentEntityMap;
 import com.example.demo.infrastructure.entities.StudentEntity;
 import com.example.demo.infrastructure.repository.JpaStudentRepository;
 import org.slf4j.Logger;

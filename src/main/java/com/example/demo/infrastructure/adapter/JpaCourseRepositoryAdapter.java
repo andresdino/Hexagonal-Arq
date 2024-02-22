@@ -2,7 +2,7 @@ package com.example.demo.infrastructure.adapter;
 
 import com.example.demo.domain.models.Course;
 import com.example.demo.domain.ports.out.CourseRepositoryPort;
-import com.example.demo.infrastructure.Mapper.CourseEntityMap;
+import com.example.demo.infrastructure.mapper.CourseEntityMap;
 import com.example.demo.infrastructure.entities.CourseEntity;
 import com.example.demo.infrastructure.repository.JpaCourseRepository;
 import org.slf4j.Logger;
@@ -36,11 +36,10 @@ public class JpaCourseRepositoryAdapter implements CourseRepositoryPort {
     @Override
     public Optional<Course> findById(Long courseId) {
         logger.info("Finding course with id: {}", courseId);
-        return jpaCourseRepository.findById(courseId)
-                .map(courseEntity -> {
-                    logger.info("Course found with id: {}", courseId);
-                    return CourseEntityMap.toDomainModel(courseEntity);
-                });
+        return jpaCourseRepository.findById(courseId).map(courseEntity -> {
+            logger.info("Course found with id: {}", courseId);
+            return CourseEntityMap.toDomainModel(courseEntity);
+        });
     }
 
     @Override
@@ -49,9 +48,7 @@ public class JpaCourseRepositoryAdapter implements CourseRepositoryPort {
         Iterable<CourseEntity> courseEntities = jpaCourseRepository.findAll();
         List<CourseEntity> courseEntityList = new ArrayList<>();
         courseEntities.forEach(courseEntityList::add);
-        List<Course> courses = courseEntityList.stream()
-                .map(CourseEntityMap::toDomainModel)
-                .collect(Collectors.toList());
+        List<Course> courses = courseEntityList.stream().map(CourseEntityMap::toDomainModel).collect(Collectors.toList());
         logger.info("Found {} courses", courses.size());
         return courses;
     }
