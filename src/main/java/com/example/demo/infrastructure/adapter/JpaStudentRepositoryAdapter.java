@@ -5,6 +5,8 @@ import com.example.demo.domain.ports.out.StudentRepositoryPort;
 import com.example.demo.infrastructure.Mapper.StudentEntityMap;
 import com.example.demo.infrastructure.entities.StudentEntity;
 import com.example.demo.infrastructure.repository.JpaStudentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class JpaStudentRepositoryAdapter implements StudentRepositoryPort {
 
     private final JpaStudentRepository jpaStudentRepository;
+    private final Logger logger = LoggerFactory.getLogger(JpaStudentRepositoryAdapter.class);
 
     public JpaStudentRepositoryAdapter(JpaStudentRepository jpaStudentRepository) {
         this.jpaStudentRepository = jpaStudentRepository;
@@ -24,39 +27,57 @@ public class JpaStudentRepositoryAdapter implements StudentRepositoryPort {
 
     @Override
     public Student save(Student student) {
+        logger.info("Saving student with id: {}", student.getId());
         StudentEntity studentEntity = StudentEntityMap.fromDomainModel(student);
         StudentEntity saveStudentEntity = jpaStudentRepository.save(studentEntity);
+        logger.info("Student saved successfully with id: {}", saveStudentEntity.getId());
         return StudentEntityMap.toDomainModel(saveStudentEntity);
     }
 
     @Override
     public Optional<Student> findById(Long studentId) {
-        return jpaStudentRepository.findById(studentId).map(StudentEntityMap::toDomainModel);
-
+        logger.info("Finding student with id: {}", studentId);
+        return jpaStudentRepository.findById(studentId)
+                .map(studentEntity -> {
+                    logger.info("Student found with id: {}", studentId);
+                    return StudentEntityMap.toDomainModel(studentEntity);
+                });
     }
 
     @Override
     public List<Student> findAll() {
+        logger.info("Finding all students");
         Iterable<StudentEntity> studentEntities = jpaStudentRepository.findAll();
         List<StudentEntity> studentEntityList = new ArrayList<>();
         studentEntities.forEach(studentEntityList::add);
-        return studentEntityList.stream().map(StudentEntityMap::toDomainModel).collect(Collectors.toList());
+        List<Student> students = studentEntityList.stream()
+                .map(StudentEntityMap::toDomainModel)
+                .collect(Collectors.toList());
+        logger.info("Found {} students", students.size());
+        return students;
     }
 
     @Override
     public Optional<Student> update(Student student) {
+        logger.info("Updating student with id: {}", student.getId());
         if (jpaStudentRepository.existsById(student.getId())) {
             StudentEntity studentEntity = StudentEntityMap.fromDomainModel(student);
             StudentEntity updateStudentEntity = jpaStudentRepository.save(studentEntity);
+            logger.info("Student updated successfully with id: {}", updateStudentEntity.getId());
             return Optional.of(StudentEntityMap.toDomainModel(updateStudentEntity));
         }
+        logger.warn("Student with id {} not found for update", student.getId());
         return Optional.empty();
     }
 
     @Override
     public void deleteById(Long studentId) {
+        logger.info("Deleting student with id: {}", studentId);
         if (jpaStudentRepository.existsById(studentId)) {
             jpaStudentRepository.deleteById(studentId);
+            logger.info("Student deleted successfully with id: {}", studentId);
+        } else {
+            logger.warn("Student with id {} not found for delete", studentId);
         }
     }
 }
