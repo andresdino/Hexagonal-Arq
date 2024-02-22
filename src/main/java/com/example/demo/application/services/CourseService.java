@@ -3,21 +3,16 @@ package com.example.demo.application.services;
 import com.example.demo.application.usecases.CourseUseCaseImpl;
 import com.example.demo.domain.models.Course;
 import com.example.demo.domain.ports.in.CourseUseCase;
-import com.example.demo.domain.ports.in.Courses.CreateCourseUseCase;
-import com.example.demo.domain.ports.in.Courses.DeleteCourseUseCase;
-import com.example.demo.domain.ports.in.Courses.RetrieveCoursesUseCase;
-import com.example.demo.domain.ports.in.Courses.UpdateCourseUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CourseService implements CourseUseCase {
 
-    @Autowired
     private CourseUseCaseImpl courseUseCaseImpl;
 
     @Override
