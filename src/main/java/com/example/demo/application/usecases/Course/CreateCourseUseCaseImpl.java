@@ -1,7 +1,5 @@
 package com.example.demo.application.usecases.Course;
 
-import com.example.demo.application.dto.request.CourseRequestDto;
-import com.example.demo.application.dto.response.CourseResponseDto;
 import com.example.demo.domain.models.Course;
 import com.example.demo.domain.ports.in.Courses.CreateCourseUseCase;
 import com.example.demo.domain.ports.out.CourseRepositoryPort;
