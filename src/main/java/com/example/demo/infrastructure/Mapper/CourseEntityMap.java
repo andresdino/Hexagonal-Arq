@@ -1,4 +1,23 @@
 package com.example.demo.infrastructure.Mapper;
 
+import com.example.demo.domain.models.Course;
+import com.example.demo.infrastructure.entities.CourseEntity;
+import lombok.Getter;
+import lombok.Setter;
+import org.modelmapper.ModelMapper;
+
+@Getter
+@Setter
 public class CourseEntityMap {
+
+    private static final ModelMapper modelMapper = new ModelMapper();
+
+    public static CourseEntity fromDomainModel(Course course) {
+        return modelMapper.map(course, CourseEntity.class);
+    }
+
+    public static Course toDomainModel(CourseEntity courseEntity) {
+        return modelMapper.map(courseEntity, Course.class);
+    }
+
 }
