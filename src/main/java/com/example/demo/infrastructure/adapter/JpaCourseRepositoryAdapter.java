@@ -24,8 +24,8 @@ public class JpaCourseRepositoryAdapter implements CourseRepository {
 
     @Override
     public Course createCourse(Course course) {
-        logger.info("Creating course with id: {}", course.getId());
         CourseEntity courseEntity = CourseMapper.fromDomainModel(course);
+        logger.info("Creating course with id: {}", course.getId());
         CourseEntity savedCourseEntity = jpaCourseRepository.save(courseEntity);
         logger.info("Course created successfully with id: {}", savedCourseEntity.getId());
         return CourseMapper.toDomainModel(savedCourseEntity);
