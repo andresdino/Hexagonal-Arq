@@ -23,13 +23,13 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
     public ResponseEntity<StudentResponseDto> getStudentById(@PathVariable("id") Long id) {
         Optional<Student> student = studentService.getStudent(id);
         return student.map(s -> ResponseEntity.ok(StudentMapper.studentToResponseDto(s)))
                 .orElseGet(() -> ResponseEntity.notFound().build());    }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<StudentResponseDto>> getAllStudents() {
         List<Student> students = studentService.getAllStudents();
         return ResponseEntity.ok(students.stream()
@@ -37,14 +37,14 @@ public class StudentController {
                 .collect(Collectors.toList()));
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<StudentResponseDto> createStudent(@RequestBody StudentRequestDto studentRequestDto) {
         Student student = StudentMapper.requestDtoToModel(studentRequestDto);
         Student createdStudent = studentService.createStudent(student);
         return ResponseEntity.status(HttpStatus.CREATED).body(StudentMapper.studentToResponseDto(createdStudent));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<StudentResponseDto> updateStudent(@PathVariable("id") Long id, @RequestBody StudentRequestDto studentRequestDto) {
         Optional<Student> existingStudent = studentService.getStudent(id);
         if (existingStudent.isPresent()) {
@@ -56,7 +56,7 @@ public class StudentController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable("id") Long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.noContent().build();

@@ -24,14 +24,14 @@ public class CourseController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
     public ResponseEntity<CourseResponseDto> getCourseById(@PathVariable("id") Long id) {
         Optional<Course> course = courseService.getCourse(id);
         return course.map(c -> ResponseEntity.ok(CourseMapper.courseToResponseDto(c)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<CourseResponseDto>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
         return ResponseEntity.ok(courses.stream()
@@ -39,14 +39,14 @@ public class CourseController {
                 .collect(Collectors.toList()));
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<CourseResponseDto> createCourse(@RequestBody CourseRequestDto courseRequestDto) {
         Course course = CourseMapper.requestDtoToModel(courseRequestDto);
         Course createdCourse = courseService.createCourse(course);
         return ResponseEntity.status(HttpStatus.CREATED).body(CourseMapper.courseToResponseDto(createdCourse));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<CourseResponseDto> updateCourse(@PathVariable("id") Long id, @RequestBody CourseRequestDto courseRequestDto) {
         Optional<Course> existingCourse = courseService.getCourse(id);
         if (existingCourse.isPresent()) {
@@ -58,7 +58,7 @@ public class CourseController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteCourse(@PathVariable("id") Long id) {
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();
