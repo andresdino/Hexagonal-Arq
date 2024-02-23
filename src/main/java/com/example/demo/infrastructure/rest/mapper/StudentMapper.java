@@ -1,9 +1,7 @@
-package com.example.demo.infrastructure.mapper;
+package com.example.demo.infrastructure.rest.mapper;
 
 import com.example.demo.domain.models.Student;
 import com.example.demo.infrastructure.entities.StudentEntity;
-import lombok.Getter;
-import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
 public class StudentMapper {

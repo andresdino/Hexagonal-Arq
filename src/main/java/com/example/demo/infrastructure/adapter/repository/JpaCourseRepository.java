@@ -1,4 +1,4 @@
-package com.example.demo.infrastructure.repository;
+package com.example.demo.infrastructure.adapter.repository;
 
 import com.example.demo.infrastructure.entities.CourseEntity;
 import org.springframework.data.repository.CrudRepository;

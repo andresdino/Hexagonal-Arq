@@ -1,4 +1,4 @@
-package com.example.demo.application.exception;
+package com.example.demo.infrastructure.exception;
 
 public class CustomException extends RuntimeException{
 

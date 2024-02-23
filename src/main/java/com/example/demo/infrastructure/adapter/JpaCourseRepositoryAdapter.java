@@ -1,10 +1,10 @@
 package com.example.demo.infrastructure.adapter;
 
 import com.example.demo.domain.models.Course;
-import com.example.demo.domain.ports.out.CourseRepositoryPort;
-import com.example.demo.infrastructure.mapper.CourseMapper;
+import com.example.demo.domain.ports.CourseRepository;
+import com.example.demo.infrastructure.adapter.repository.JpaCourseRepository;
 import com.example.demo.infrastructure.entities.CourseEntity;
-import com.example.demo.infrastructure.repository.JpaCourseRepository;
+import com.example.demo.infrastructure.rest.mapper.CourseMapper;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,55 +17,52 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-public class JpaCourseRepositoryAdapter implements CourseRepositoryPort {
+public class JpaCourseRepositoryAdapter implements CourseRepository {
 
     private final JpaCourseRepository jpaCourseRepository;
     private final Logger logger = LoggerFactory.getLogger(JpaCourseRepositoryAdapter.class);
 
     @Override
-    public Course save(Course course) {
-        logger.info("Saving course with id: {}", course.getId());
+    public Course createCourse(Course course) {
+        logger.info("Creating course with id: {}", course.getId());
         CourseEntity courseEntity = CourseMapper.fromDomainModel(course);
-        CourseEntity saveCourseEntity = jpaCourseRepository.save(courseEntity);
-        logger.info("Course saved successfully with id: {}", saveCourseEntity.getId());
-        return CourseMapper.toDomainModel(saveCourseEntity);
+        CourseEntity savedCourseEntity = jpaCourseRepository.save(courseEntity);
+        logger.info("Course created successfully with id: {}", savedCourseEntity.getId());
+        return CourseMapper.toDomainModel(savedCourseEntity);
     }
 
     @Override
-    public Optional<Course> findById(Long courseId) {
-        logger.info("Finding course with id: {}", courseId);
-        return jpaCourseRepository.findById(courseId).map(courseEntity -> {
-            logger.info("Course found with id: {}", courseId);
-            return CourseMapper.toDomainModel(courseEntity);
-        });
+    public Optional<Course> getCourse(Long courseId) {
+        logger.info("Getting course with id: {}", courseId);
+        return jpaCourseRepository.findById(courseId).map(CourseMapper::toDomainModel);
     }
 
     @Override
-    public List<Course> findAll() {
-        logger.info("Finding all courses");
+    public List<Course> getAllCourses() {
+        logger.info("Getting all courses");
         Iterable<CourseEntity> courseEntities = jpaCourseRepository.findAll();
-        List<CourseEntity> courseEntityList = new ArrayList<>();
-        courseEntities.forEach(courseEntityList::add);
-        List<Course> courses = courseEntityList.stream().map(CourseMapper::toDomainModel).collect(Collectors.toList());
+        List<Course> courses = new ArrayList<>();
+        courseEntities.forEach(courseEntity -> courses.add(CourseMapper.toDomainModel(courseEntity)));
         logger.info("Found {} courses", courses.size());
         return courses;
     }
 
     @Override
-    public Optional<Course> update(Course course) {
-        logger.info("Updating course with id: {}", course.getId());
-        if (jpaCourseRepository.existsById(course.getId())) {
+    public Optional<Course> updateCourse(Long courseId, Course course) {
+        logger.info("Updating course with id: {}", courseId);
+        if (jpaCourseRepository.existsById(courseId)) {
             CourseEntity courseEntity = CourseMapper.fromDomainModel(course);
-            CourseEntity updateCourseEntity = jpaCourseRepository.save(courseEntity);
-            logger.info("Course updated successfully with id: {}", updateCourseEntity.getId());
-            return Optional.of(CourseMapper.toDomainModel(updateCourseEntity));
+            courseEntity.setId(courseId);
+            CourseEntity updatedCourseEntity = jpaCourseRepository.save(courseEntity);
+            logger.info("Course updated successfully with id: {}", updatedCourseEntity.getId());
+            return Optional.of(CourseMapper.toDomainModel(updatedCourseEntity));
         }
-        logger.warn("Course with id {} not found for update", course.getId());
+        logger.warn("Course with id {} not found for update", courseId);
         return Optional.empty();
     }
 
     @Override
-    public void deleteById(Long courseId) {
+    public void deleteCourse(Long courseId) {
         logger.info("Deleting course with id: {}", courseId);
         if (jpaCourseRepository.existsById(courseId)) {
             jpaCourseRepository.deleteById(courseId);

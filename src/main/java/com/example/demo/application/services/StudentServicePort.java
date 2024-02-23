@@ -1,11 +1,11 @@
-package com.example.demo.domain.ports.in;
+package com.example.demo.application.services;
 
 import com.example.demo.domain.models.Student;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface StudentUseCase {
+public interface StudentServicePort {
 
     Student createStudent(Student student);
     void deleteStudent(Long studentId);
