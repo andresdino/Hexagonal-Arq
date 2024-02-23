@@ -3,10 +3,7 @@ package com.example.demo.infrastructure.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CourseEntity {
 
     @Id
@@ -25,7 +23,6 @@ public class CourseEntity {
     private String name;
     @NotNull
     private String teacher;
-    @OneToMany(mappedBy="course")
-    @Column(nullable = true)
+    @OneToMany(mappedBy="courseId")
     private List<StudentEntity> students;
 }

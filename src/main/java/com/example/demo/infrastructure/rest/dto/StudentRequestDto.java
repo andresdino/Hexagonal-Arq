@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class StudentRequestDto {
     private String name;
-    private Long course;
+    private Long courseId;
 }

@@ -4,15 +4,15 @@ public class Student {
 
     private Long id;
     private String name;
-    private Long course;
+    private Long courseId;
 
     public Student() {
     }
 
-    public Student(Long id, String name, Long course) {
+    public Student(Long id, String name, Long courseId) {
         this.id = id;
         this.name = name;
-        this.course = course;
+        this.courseId = courseId;
     }
 
     public Long getId() {
@@ -31,11 +31,11 @@ public class Student {
         this.name = name;
     }
 
-    public Long getCourse() {
-        return course;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setCourse(Long course) {
-        this.course = course;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 }

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,17 +23,16 @@ public class JpaCourseRepositoryAdapter implements CourseRepository {
 
     @Override
     public Course createCourse(Course course) {
-        CourseEntity courseEntity = CourseMapper.fromDomainModel(course);
-        logger.info("Creating course with id: {}", course.getId());
+        CourseEntity courseEntity = CourseMapper.modelToEntity(course);
         CourseEntity savedCourseEntity = jpaCourseRepository.save(courseEntity);
-        logger.info("Course created successfully with id: {}", savedCourseEntity.getId());
-        return CourseMapper.toDomainModel(savedCourseEntity);
+        logger.info("Creating course with id: {}", savedCourseEntity.toString());
+        return CourseMapper.entityToModel(savedCourseEntity);
     }
 
     @Override
     public Optional<Course> getCourse(Long courseId) {
         logger.info("Getting course with id: {}", courseId);
-        return jpaCourseRepository.findById(courseId).map(CourseMapper::toDomainModel);
+        return jpaCourseRepository.findById(courseId).map(CourseMapper::entityToModel);
     }
 
     @Override
@@ -42,7 +40,7 @@ public class JpaCourseRepositoryAdapter implements CourseRepository {
         logger.info("Getting all courses");
         Iterable<CourseEntity> courseEntities = jpaCourseRepository.findAll();
         List<Course> courses = new ArrayList<>();
-        courseEntities.forEach(courseEntity -> courses.add(CourseMapper.toDomainModel(courseEntity)));
+        courseEntities.forEach(courseEntity -> courses.add(CourseMapper.entityToModel(courseEntity)));
         logger.info("Found {} courses", courses.size());
         return courses;
     }
@@ -51,11 +49,11 @@ public class JpaCourseRepositoryAdapter implements CourseRepository {
     public Optional<Course> updateCourse(Long courseId, Course course) {
         logger.info("Updating course with id: {}", courseId);
         if (jpaCourseRepository.existsById(courseId)) {
-            CourseEntity courseEntity = CourseMapper.fromDomainModel(course);
+            CourseEntity courseEntity = CourseMapper.modelToEntity(course);
             courseEntity.setId(courseId);
             CourseEntity updatedCourseEntity = jpaCourseRepository.save(courseEntity);
             logger.info("Course updated successfully with id: {}", updatedCourseEntity.getId());
-            return Optional.of(CourseMapper.toDomainModel(updatedCourseEntity));
+            return Optional.of(CourseMapper.entityToModel(updatedCourseEntity));
         }
         logger.warn("Course with id {} not found for update", courseId);
         return Optional.empty();

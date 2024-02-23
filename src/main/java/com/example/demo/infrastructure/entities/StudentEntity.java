@@ -2,10 +2,7 @@ package com.example.demo.infrastructure.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -20,7 +17,8 @@ public class StudentEntity {
     @NotNull
     private String name;
     @ManyToOne
-    @JoinColumn(name="course_id", nullable=false)
-    private CourseEntity course;
+    @JoinColumn(name="course_id")
+    private CourseEntity courseId;
+
 
 }

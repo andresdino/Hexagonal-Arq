@@ -4,7 +4,6 @@ import com.example.demo.domain.models.Student;
 import com.example.demo.domain.ports.StudentRepository;
 import com.example.demo.infrastructure.adapter.repository.JpaStudentRepository;
 import com.example.demo.infrastructure.entities.StudentEntity;
-import com.example.demo.infrastructure.rest.mapper.CourseMapper;
 import com.example.demo.infrastructure.rest.mapper.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,11 +24,10 @@ public class JpaStudentRepositoryAdapter implements StudentRepository {
 
     @Override
     public Student createStudent(Student student) {
-        logger.info("Creating student: {}", student);
-        StudentEntity studentEntity = StudentMapper.fromDomainModel(student);
+        StudentEntity studentEntity = StudentMapper.modelToEntity(student);
         StudentEntity savedStudentEntity = jpaStudentRepository.save(studentEntity);
-        logger.info("Student created successfully: {}", savedStudentEntity);
-        return StudentMapper.toDomainModel(savedStudentEntity);
+        logger.info("Created student: {}", savedStudentEntity.getName());
+        return StudentMapper.entityToModel(savedStudentEntity);
     }
 
     @Override
@@ -37,8 +35,8 @@ public class JpaStudentRepositoryAdapter implements StudentRepository {
         logger.info("Getting student with ID: {}", studentId);
         return jpaStudentRepository.findById(studentId)
                 .map(studentEntity -> {
-                    logger.info("Student found: {}", studentEntity);
-                    return StudentMapper.toDomainModel(studentEntity);
+                    logger.info("Student found: {}", studentEntity.getName());
+                    return StudentMapper.entityToModel(studentEntity);
                 });
     }
 
@@ -49,7 +47,7 @@ public class JpaStudentRepositoryAdapter implements StudentRepository {
         List<StudentEntity> studentEntityList = new ArrayList<>();
         studentEntities.forEach(studentEntityList::add);
         List<Student> students = studentEntityList.stream()
-                .map(StudentMapper::toDomainModel)
+                .map(StudentMapper::entityToModel)
                 .collect(Collectors.toList());
         logger.info("Found {} students", students.size());
         return students;
@@ -59,10 +57,10 @@ public class JpaStudentRepositoryAdapter implements StudentRepository {
     public Optional<Student> updateStudent(Long studentId, Student student) {
         logger.info("Updating course with id: {}", studentId);
         if (jpaStudentRepository.existsById(studentId)) {
-            StudentEntity studentEntity = StudentMapper.fromDomainModel(student);
+            StudentEntity studentEntity = StudentMapper.modelToEntity(student);
             StudentEntity updatedStudentEntity = jpaStudentRepository.save(studentEntity);
             logger.info("Student updated successfully with id: {}", updatedStudentEntity.getId());
-            return Optional.of(StudentMapper.toDomainModel(updatedStudentEntity));
+            return Optional.of(StudentMapper.entityToModel(updatedStudentEntity));
         }
         logger.warn("Student with id {} not found for update", studentId);
         return Optional.empty();

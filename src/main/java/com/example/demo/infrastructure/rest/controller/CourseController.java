@@ -5,7 +5,6 @@ import com.example.demo.domain.models.Course;
 import com.example.demo.infrastructure.rest.dto.CourseRequestDto;
 import com.example.demo.infrastructure.rest.dto.CourseResponseDto;
 import com.example.demo.infrastructure.rest.mapper.CourseMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,7 @@ public class CourseController {
     @GetMapping("/{id}")
     public ResponseEntity<CourseResponseDto> getCourseById(@PathVariable("id") Long id) {
         Optional<Course> course = courseService.getCourse(id);
-        return course.map(c -> ResponseEntity.ok(CourseMapper.toDto(c)))
+        return course.map(c -> ResponseEntity.ok(CourseMapper.courseToResponseDto(c)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -36,25 +35,25 @@ public class CourseController {
     public ResponseEntity<List<CourseResponseDto>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
         return ResponseEntity.ok(courses.stream()
-                .map(CourseMapper::toDto)
+                .map(CourseMapper::courseToResponseDto)
                 .collect(Collectors.toList()));
     }
 
     @PostMapping
     public ResponseEntity<CourseResponseDto> createCourse(@RequestBody CourseRequestDto courseRequestDto) {
-        Course course = CourseMapper.toEntity(courseRequestDto);
+        Course course = CourseMapper.requestDtoToModel(courseRequestDto);
         Course createdCourse = courseService.createCourse(course);
-        return ResponseEntity.status(HttpStatus.CREATED).body(CourseMapper.toDto(createdCourse));
+        return ResponseEntity.status(HttpStatus.CREATED).body(CourseMapper.courseToResponseDto(createdCourse));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CourseResponseDto> updateCourse(@PathVariable("id") Long id, @RequestBody CourseRequestDto courseRequestDto) {
         Optional<Course> existingCourse = courseService.getCourse(id);
         if (existingCourse.isPresent()) {
-            Course course = CourseMapper.toEntity(courseRequestDto);
+            Course course = CourseMapper.requestDtoToModel(courseRequestDto);
             course.setId(id);
             Course updatedCourse = courseService.updateCourse(id,course).orElseThrow();
-            return ResponseEntity.ok(CourseMapper.toDto(updatedCourse));
+            return ResponseEntity.ok(CourseMapper.courseToResponseDto(updatedCourse));
         }
         return ResponseEntity.notFound().build();
     }

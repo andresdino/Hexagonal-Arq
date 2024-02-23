@@ -8,5 +8,5 @@ import lombok.Setter;
 public class StudentResponseDto {
     private Long id;
     private String name;
-    private Long course;
+    private Long courseId;
 }

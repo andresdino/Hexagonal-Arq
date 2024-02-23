@@ -12,22 +12,22 @@ public class CourseMapper {
 
     private static final ModelMapper modelMapper = new ModelMapper();
 
-    public static CourseEntity fromDomainModel(Course course) {
+    public static CourseEntity modelToEntity(Course course) {
         return modelMapper.map(course, CourseEntity.class);
     }
 
-    public static Course toDomainModel(CourseEntity courseEntity) {
+    public static Course entityToModel(CourseEntity courseEntity) {
         return modelMapper.map(courseEntity, Course.class);
     }
 
-    public static Course toEntity(CourseRequestDto courseRequestDto){
+    public static Course requestDtoToModel(CourseRequestDto courseRequestDto){
         Course course = new Course();
         course.setName(courseRequestDto.getName());
         course.setTeacher(courseRequestDto.getTeacher());
         return course;
     }
 
-    public static CourseResponseDto toDto(Course course){
+    public static CourseResponseDto courseToResponseDto(Course course){
         CourseResponseDto courseResponseDto = new CourseResponseDto();
         courseResponseDto.setId(course.getId());
         courseResponseDto.setName(course.getName());
@@ -36,7 +36,7 @@ public class CourseMapper {
             courseResponseDto.setStudents(
                     course.getStudents()
                             .stream()
-                            .map(StudentMapper::toDto)
+                            .map(StudentMapper::studentToResponseDto)
                             .collect(Collectors.toList()));
         }
         return courseResponseDto;
