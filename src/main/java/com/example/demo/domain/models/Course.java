@@ -12,6 +12,7 @@ public class Course {
 
     public Course(Long id, String name, String teacher, List<Student> students) {
         this.id = id;
+        this.teacher = teacher;
         this.name = name;
         this.students = students;
     }
